@@ -149,7 +149,16 @@ class ScriptBuilder(object):
                     broadcast_id=val[-1][-1],
                     broadcast_name=val[-1][-2]
                 )
-            elif atype in ("number", "direction"):
+            elif atype == "number":
+                string_value = val[-1][-1]
+                if '.' in string_value:
+                    number_value = float(string_value)
+                else:
+                    number_value = int(string_value)
+                input.__dict__.update(
+                    number=number_value
+                )
+            elif atype == "direction":
                 input.__dict__.update(
                     number=int(val[-1][-1])
                 )
