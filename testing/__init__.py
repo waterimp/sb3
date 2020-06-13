@@ -62,5 +62,23 @@ class SB3Test(unittest.TestCase):
         self.assertEqual(block.blocks()[7].inputs[1].block.id, "jq}7@gdupgvqfHC+t3[e", "target: block input")
         self.assertEqual(block.blocks()[8].fields[0].value, "volume", "target: block field")
 
+
+class FloatNumberTest(unittest.TestCase):
+    def setUp(self):
+        self.project, self.assets = sb3.open_sb3("box_with_ears.sb3")
+
+    def test_float_numbers(self):
+        # find control_wait block with a floating point input.
+        sprite = self.project.targets[1]
+        blocks = sprite.block_info.blocks()
+        block = blocks[13]
+        self.assertEqual(block.id, '0Zv;XCho.[!Cpcs{/;~m')
+        self.assertEqual(block.opcode, 'control_wait')
+
+        # validate floating point input is the correct type and value
+        input_0 = block.inputs[0]
+        self.assertIsInstance(input_0.number, float)
+        self.assertAlmostEqual(input_0.number, 0.5)
+
 if __name__ == '__main__':
     unittest.main()
